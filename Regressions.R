@@ -1,5 +1,5 @@
 rm(list=ls())
-library(car)
+library(car); library(stargazer)
 setwd("D:/AP LARSON/HOLC")
 dat <- read.csv("HOLCbyTractFinal.csv")
 str(dat$cbsaname)
@@ -84,7 +84,9 @@ housingValue <- lm(thouHousVal ~ quantScore +
                      medAge +
                      completePlumb +
                      completeKitch, data = dat)
-print(summary(housingValue), digits = 3)
+# print(summary(housingValue), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/housingValue.tex"
+writeLines(capture.output(stargazer(housingValue)), texFileName)
 
 # Tests for multicollinearity. Must re-run
 myCols <- c("quantScore", "thouHousVal", "bed0", "bed1",
@@ -158,8 +160,10 @@ tenure <- lm(pctOwn ~ quantScore +
                `Winston-Salem, NC`,
                # `Youngstown-Warren-Boardman, OH-PA` +
                data = dat)
-print(summary(tenure), digits = 3)
+# print(summary(tenure), digits = 3)
 vif(tenure)
+texFileName <- "D:/AP LARSON/HOLC/tenure.tex"
+writeLines(capture.output(stargazer(tenure)), texFileName)
 
 # May need to add additional ed variables
 income <- lm(thouInc ~ quantScore +
@@ -227,7 +231,9 @@ income <- lm(thouInc ~ quantScore +
                `Winston-Salem, NC` +
              # `Youngstown-Warren-Boardman, OH-PA` +
                edHighSchool, data = dat)
-print(summary(income), digits = 3)
+# print(summary(income), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/income.tex"
+writeLines(capture.output(stargazer(income)), texFileName)
 
 myCols <- c("quantScore", "thouInc", "edHighSchool",
             "edSomeColl", "edBach", "edGrad")
@@ -299,7 +305,9 @@ unemp <- lm(pctUnemp ~ quantScore +
               `Winston-Salem, NC` +
             # `Youngstown-Warren-Boardman, OH-PA` +
               edHighSchool, data = dat)
-print(summary(unemp), digits = 3)
+# print(summary(unemp), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/unemp.tex"
+writeLines(capture.output(stargazer(unemp)), texFileName)
 
 myCols <- c("quantScore", "pctUnemp", "edHighSchool",
             "edSomeColl", "edBach", "edGrad")
@@ -371,7 +379,9 @@ zeroCar <- lm(zeroCar ~ quantScore +
                 `Winston-Salem, NC`,
               # `Youngstown-Warren-Boardman, OH-PA` +
               data = dat)
-print(summary(zeroCar), digits = 3)
+# print(summary(zeroCar), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/zeroCar.tex"
+writeLines(capture.output(stargazer(zeroCar)), texFileName)
 
 myCols <- c("zeroCar", "incomeData")
 testCase <- dat[myCols]
@@ -442,7 +452,9 @@ singParent <- lm(singParentHH ~ quantScore +
                    `Winston-Salem, NC`,
                  # `Youngstown-Warren-Boardman, OH-PA` +
                  data = dat)
-print(summary(singParent), digits = 3)
+# print(summary(singParent), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/singParent.tex"
+writeLines(capture.output(stargazer(singParent)), texFileName)
 
 comBl10 <- lm(comBl10 ~ quantScore +
                 `Akron, OH` +
@@ -509,7 +521,9 @@ comBl10 <- lm(comBl10 ~ quantScore +
                 `Winston-Salem, NC`,
               # `Youngstown-Warren-Boardman, OH-PA` +
               data = dat)
-print(summary(comBl10), digits = 3)
+# print(summary(comBl10), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/comBl10.tex"
+writeLines(capture.output(stargazer(comBl10)), texFileName)
 
 com10 <- lm(com10 ~ quantScore +
               `Akron, OH` +
@@ -576,7 +590,9 @@ com10 <- lm(com10 ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(com10), digits = 3)
+# print(summary(com10), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/com10.tex"
+writeLines(capture.output(stargazer(com10)), texFileName)
 
 com20 <- lm(com20 ~ quantScore +
               `Akron, OH` +
@@ -643,7 +659,9 @@ com20 <- lm(com20 ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(com20), digits = 3)
+# print(summary(com20), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/com20.tex"
+writeLines(capture.output(stargazer(com20)), texFileName)
 
 com30 <- lm(com30 ~ quantScore +
               `Akron, OH` +
@@ -710,7 +728,9 @@ com30 <- lm(com30 ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(com30), digits = 3)
+# print(summary(com30), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/com30.tex"
+writeLines(capture.output(stargazer(com30)), texFileName)
 
 com40 <- lm(com40 ~ quantScore +
               `Akron, OH` +
@@ -777,7 +797,9 @@ com40 <- lm(com40 ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(com40), digits = 3)
+# print(summary(com40), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/com40.tex"
+writeLines(capture.output(stargazer(com40)), texFileName)
 
 com60 <- lm(com60 ~ quantScore +
               `Akron, OH` +
@@ -844,7 +866,9 @@ com60 <- lm(com60 ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(com60), digits = 3)
+# print(summary(com60), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/com60.tex"
+writeLines(capture.output(stargazer(com60)), texFileName)
 
 dat$allBl149 <- dat$pct100 + dat$pct149
 poverty <- lm(allBl149 ~ quantScore +
@@ -912,7 +936,9 @@ poverty <- lm(allBl149 ~ quantScore +
                 `Winston-Salem, NC`,
               # `Youngstown-Warren-Boardman, OH-PA` +
               data = dat)
-print(summary(poverty), digits = 3)
+# print(summary(poverty), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/poverty.tex"
+writeLines(capture.output(stargazer(poverty)), texFileName)
 
 deepPoverty <- lm(pct100 ~ quantScore +
                     `Akron, OH` +
@@ -979,7 +1005,9 @@ deepPoverty <- lm(pct100 ~ quantScore +
                     `Winston-Salem, NC`,
                   # `Youngstown-Warren-Boardman, OH-PA` +
                   data = dat)
-print(summary(deepPoverty), digits = 3)
+# print(summary(deepPoverty), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/deepPoverty.tex"
+writeLines(capture.output(stargazer(deepPoverty)), texFileName)
 
 nWht <- lm(pctWht ~ quantScore +
              `Akron, OH` +
@@ -1046,7 +1074,9 @@ nWht <- lm(pctWht ~ quantScore +
              `Winston-Salem, NC`,
            # `Youngstown-Warren-Boardman, OH-PA` +
            data = dat)
-print(summary(nWht), digits = 4)
+# print(summary(nWht), digits = 4)
+texFileName <- "D:/AP LARSON/HOLC/nWht.tex"
+writeLines(capture.output(stargazer(nWht)), texFileName)
 
 nBlk <- lm(pctBlk ~ quantScore +
              `Akron, OH` +
@@ -1113,7 +1143,9 @@ nBlk <- lm(pctBlk ~ quantScore +
              `Winston-Salem, NC`,
            # `Youngstown-Warren-Boardman, OH-PA` +
            data = dat)
-print(summary(nBlk), digits = 4)
+# print(summary(nBlk), digits = 4)
+texFileName <- "D:/AP LARSON/HOLC/nBlk.tex"
+writeLines(capture.output(stargazer(nBlk)), texFileName)
 
 nHisp <- lm(pctHisp ~ quantScore +
               `Akron, OH` +
@@ -1180,7 +1212,9 @@ nHisp <- lm(pctHisp ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(nHisp), digits = 4)
+# print(summary(nHisp), digits = 4)
+texFileName <- "D:/AP LARSON/HOLC/nHisp.tex"
+writeLines(capture.output(stargazer(nHisp)), texFileName)
 
 rentCost <- lm(hunMedRent ~ quantScore +
                  `Akron, OH` +
@@ -1247,7 +1281,9 @@ rentCost <- lm(hunMedRent ~ quantScore +
                  `Winston-Salem, NC`,
                # `Youngstown-Warren-Boardman, OH-PA` +
                data = dat)
-print(summary(rentCost), digits = 3)
+# print(summary(rentCost), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/rentCost.tex"
+writeLines(capture.output(stargazer(rentCost)), texFileName)
 
 grapi <- lm(grapi ~ quantScore +
               hunMedRent +
@@ -1315,7 +1351,10 @@ grapi <- lm(grapi ~ quantScore +
               `Winston-Salem, NC`,
             # `Youngstown-Warren-Boardman, OH-PA` +
             data = dat)
-print(summary(grapi), digits = 3)
+# print(summary(grapi), digits = 3)
+texFileName <- "D:/AP LARSON/HOLC/grapi.tex"
+writeLines(capture.output(stargazer(grapi)), texFileName)
+
 myCols <- c("grapi", "hunMedRent")
 testCase <- dat[myCols]
 cor(testCase, method = "pearson", use = "complete.obs")
