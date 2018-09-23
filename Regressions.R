@@ -86,7 +86,10 @@ housingValue <- lm(thouHousVal ~ quantScore +
                      completeKitch, data = dat)
 # print(summary(housingValue), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/housingValue.tex"
-writeLines(capture.output(stargazer(housingValue)), texFileName)
+writeLines(capture.output(stargazer(housingValue,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Home Value, \$1000s")), texFileName)
 
 # Tests for multicollinearity. Must re-run
 myCols <- c("quantScore", "thouHousVal", "bed0", "bed1",
@@ -163,7 +166,10 @@ tenure <- lm(pctOwn ~ quantScore +
 # print(summary(tenure), digits = 3)
 vif(tenure)
 texFileName <- "D:/AP LARSON/HOLC/tenure.tex"
-writeLines(capture.output(stargazer(tenure)), texFileName)
+writeLines(capture.output(stargazer(tenure,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Home Ownership")), texFileName)
 
 # May need to add additional ed variables
 income <- lm(thouInc ~ quantScore +
@@ -233,7 +239,10 @@ income <- lm(thouInc ~ quantScore +
                edHighSchool, data = dat)
 # print(summary(income), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/income.tex"
-writeLines(capture.output(stargazer(income)), texFileName)
+writeLines(capture.output(stargazer(income,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Median Annual Household Income, \$1000s")), texFileName)
 
 myCols <- c("quantScore", "thouInc", "edHighSchool",
             "edSomeColl", "edBach", "edGrad")
@@ -307,7 +316,10 @@ unemp <- lm(pctUnemp ~ quantScore +
               edHighSchool, data = dat)
 # print(summary(unemp), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/unemp.tex"
-writeLines(capture.output(stargazer(unemp)), texFileName)
+writeLines(capture.output(stargazer(unemp,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Unemployment Rate")), texFileName)
 
 myCols <- c("quantScore", "pctUnemp", "edHighSchool",
             "edSomeColl", "edBach", "edGrad")
@@ -381,7 +393,10 @@ zeroCar <- lm(zeroCar ~ quantScore +
               data = dat)
 # print(summary(zeroCar), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/zeroCar.tex"
-writeLines(capture.output(stargazer(zeroCar)), texFileName)
+writeLines(capture.output(stargazer(zeroCar,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Zero-Car Households")), texFileName)
 
 myCols <- c("zeroCar", "incomeData")
 testCase <- dat[myCols]
@@ -454,7 +469,10 @@ singParent <- lm(singParentHH ~ quantScore +
                  data = dat)
 # print(summary(singParent), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/singParent.tex"
-writeLines(capture.output(stargazer(singParent)), texFileName)
+writeLines(capture.output(stargazer(singParent,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Single-Parent Households")), texFileName)
 
 comBl10 <- lm(comBl10 ~ quantScore +
                 `Akron, OH` +
@@ -523,7 +541,10 @@ comBl10 <- lm(comBl10 ~ quantScore +
               data = dat)
 # print(summary(comBl10), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/comBl10.tex"
-writeLines(capture.output(stargazer(comBl10)), texFileName)
+writeLines(capture.output(stargazer(comBl10,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes Below 10 Minutes")), texFileName)
 
 com10 <- lm(com10 ~ quantScore +
               `Akron, OH` +
@@ -592,7 +613,10 @@ com10 <- lm(com10 ~ quantScore +
             data = dat)
 # print(summary(com10), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/com10.tex"
-writeLines(capture.output(stargazer(com10)), texFileName)
+writeLines(capture.output(stargazer(com10,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes 10-19 Minutes")), texFileName)
 
 com20 <- lm(com20 ~ quantScore +
               `Akron, OH` +
@@ -661,7 +685,10 @@ com20 <- lm(com20 ~ quantScore +
             data = dat)
 # print(summary(com20), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/com20.tex"
-writeLines(capture.output(stargazer(com20)), texFileName)
+writeLines(capture.output(stargazer(com20,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes 20-29 Minutes")), texFileName)
 
 com30 <- lm(com30 ~ quantScore +
               `Akron, OH` +
@@ -730,7 +757,10 @@ com30 <- lm(com30 ~ quantScore +
             data = dat)
 # print(summary(com30), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/com30.tex"
-writeLines(capture.output(stargazer(com30)), texFileName)
+writeLines(capture.output(stargazer(com30,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes 30-39 Minutes")), texFileName)
 
 com40 <- lm(com40 ~ quantScore +
               `Akron, OH` +
@@ -799,7 +829,10 @@ com40 <- lm(com40 ~ quantScore +
             data = dat)
 # print(summary(com40), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/com40.tex"
-writeLines(capture.output(stargazer(com40)), texFileName)
+writeLines(capture.output(stargazer(com40,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes 40-59 Minutes")), texFileName)
 
 com60 <- lm(com60 ~ quantScore +
               `Akron, OH` +
@@ -868,7 +901,10 @@ com60 <- lm(com60 ~ quantScore +
             data = dat)
 # print(summary(com60), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/com60.tex"
-writeLines(capture.output(stargazer(com60)), texFileName)
+writeLines(capture.output(stargazer(com60,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes 60 or More Minutes")), texFileName)
 
 dat$allBl149 <- dat$pct100 + dat$pct149
 poverty <- lm(allBl149 ~ quantScore +
@@ -938,7 +974,10 @@ poverty <- lm(allBl149 ~ quantScore +
               data = dat)
 # print(summary(poverty), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/poverty.tex"
-writeLines(capture.output(stargazer(poverty)), texFileName)
+writeLines(capture.output(stargazer(poverty,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Residents Below 149\% FPL")), texFileName)
 
 deepPoverty <- lm(pct100 ~ quantScore +
                     `Akron, OH` +
@@ -1007,7 +1046,10 @@ deepPoverty <- lm(pct100 ~ quantScore +
                   data = dat)
 # print(summary(deepPoverty), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/deepPoverty.tex"
-writeLines(capture.output(stargazer(deepPoverty)), texFileName)
+writeLines(capture.output(stargazer(deepPoverty,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Residents Below 100\% FPL")), texFileName)
 
 nWht <- lm(pctWht ~ quantScore +
              `Akron, OH` +
@@ -1076,7 +1118,10 @@ nWht <- lm(pctWht ~ quantScore +
            data = dat)
 # print(summary(nWht), digits = 4)
 texFileName <- "D:/AP LARSON/HOLC/nWht.tex"
-writeLines(capture.output(stargazer(nWht)), texFileName)
+writeLines(capture.output(stargazer(nWht,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage White Residents")), texFileName)
 
 nBlk <- lm(pctBlk ~ quantScore +
              `Akron, OH` +
@@ -1145,7 +1190,10 @@ nBlk <- lm(pctBlk ~ quantScore +
            data = dat)
 # print(summary(nBlk), digits = 4)
 texFileName <- "D:/AP LARSON/HOLC/nBlk.tex"
-writeLines(capture.output(stargazer(nBlk)), texFileName)
+writeLines(capture.output(stargazer(nBlk,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Black Residents")), texFileName)
 
 nHisp <- lm(pctHisp ~ quantScore +
               `Akron, OH` +
@@ -1214,7 +1262,10 @@ nHisp <- lm(pctHisp ~ quantScore +
             data = dat)
 # print(summary(nHisp), digits = 4)
 texFileName <- "D:/AP LARSON/HOLC/nHisp.tex"
-writeLines(capture.output(stargazer(nHisp)), texFileName)
+writeLines(capture.output(stargazer(nHisp,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Hispanic/Latino Residents")), texFileName)
 
 rentCost <- lm(hunMedRent ~ quantScore +
                  `Akron, OH` +
@@ -1283,7 +1334,10 @@ rentCost <- lm(hunMedRent ~ quantScore +
                data = dat)
 # print(summary(rentCost), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/rentCost.tex"
-writeLines(capture.output(stargazer(rentCost)), texFileName)
+writeLines(capture.output(stargazer(rentCost,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Median Rent, \$100s")), texFileName)
 
 grapi <- lm(grapi ~ quantScore +
               hunMedRent +
@@ -1353,7 +1407,10 @@ grapi <- lm(grapi ~ quantScore +
             data = dat)
 # print(summary(grapi), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/grapi.tex"
-writeLines(capture.output(stargazer(grapi)), texFileName)
+writeLines(capture.output(stargazer(grapi,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Gross Rent as a Percentage of Annual Income")), texFileName)
 
 myCols <- c("grapi", "hunMedRent")
 testCase <- dat[myCols]
