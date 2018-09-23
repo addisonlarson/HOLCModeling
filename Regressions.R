@@ -12,6 +12,16 @@ for (i in 1:length(namevector)){
   dat[i + 60] <- ifelse(dat$cbsaname == namevector[[i]], 1, 0)
 }
 
+# Control by region
+# See https://www2.census.gov/programs-surveys/popest/geographies/2015/state-geocodes-v2015.xls
+xwalk <- read.csv("state-geocodes-v2015.csv")
+xwalk <- xwalk[c(2:3)]
+dat <- merge(dat, xwalk, by.x = "st", by.y = "statefp")
+dat$regSouth <- ifelse(dat$name == "South Region", 1, 0)
+dat$regMidwest <- ifelse(dat$name == "Midwest Region", 1, 0)
+dat$regNortheast <- ifelse(dat$name == "Northeast Region", 1, 0)
+dat$regWest <- ifelse(dat$name == "West Region", 1, 0)
+
 housingValue <- lm(thouHousVal ~ quantScore +
                      `Akron, OH` +
                      `Albany-Schenectady-Troy, NY` +
@@ -89,7 +99,16 @@ texFileName <- "D:/AP LARSON/HOLC/housingValue.tex"
 writeLines(capture.output(stargazer(housingValue,
                                     style = "qje",
                                     omit = 2:64,
-                                    title = "Home Value, \$1000s")), texFileName)
+                                    dep.var.labels = "Home Value, $1000s",
+                                    covariate.labels = c("HOLC Rating",
+                                                         "1 Bedroom",
+                                                         "2 Bedrooms",
+                                                         "3 Bedrooms",
+                                                         "4 Bedrooms",
+                                                         "Median Home Age",
+                                                         "Complete Plumbing Facilities",
+                                                         "Complete Kitchen Facilities"),
+                                    title = "Home Value, $1000s")), texFileName)
 
 # Tests for multicollinearity. Must re-run
 myCols <- c("quantScore", "thouHousVal", "bed0", "bed1",
@@ -169,6 +188,8 @@ texFileName <- "D:/AP LARSON/HOLC/tenure.tex"
 writeLines(capture.output(stargazer(tenure,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Own Home",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage Home Ownership")), texFileName)
 
 # May need to add additional ed variables
@@ -242,7 +263,9 @@ texFileName <- "D:/AP LARSON/HOLC/income.tex"
 writeLines(capture.output(stargazer(income,
                                     style = "qje",
                                     omit = 2:64,
-                                    title = "Median Annual Household Income, \$1000s")), texFileName)
+                                    dep.var.labels = "Median Income, $1000s",
+                                    covariate.labels = c("HOLC Rating", "Pct. HS Grad or Equivalent"),
+                                    title = "Median Annual Household Income, $1000s")), texFileName)
 
 myCols <- c("quantScore", "thouInc", "edHighSchool",
             "edSomeColl", "edBach", "edGrad")
@@ -319,6 +342,8 @@ texFileName <- "D:/AP LARSON/HOLC/unemp.tex"
 writeLines(capture.output(stargazer(unemp,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Unemployed",
+                                    covariate.labels = c("HOLC Rating", "Pct. HS Grad or Equivalent"),
                                     title = "Unemployment Rate")), texFileName)
 
 myCols <- c("quantScore", "pctUnemp", "edHighSchool",
@@ -396,6 +421,8 @@ texFileName <- "D:/AP LARSON/HOLC/zeroCar.tex"
 writeLines(capture.output(stargazer(zeroCar,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Zero-Car Households",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage Zero-Car Households")), texFileName)
 
 myCols <- c("zeroCar", "incomeData")
@@ -472,6 +499,8 @@ texFileName <- "D:/AP LARSON/HOLC/singParent.tex"
 writeLines(capture.output(stargazer(singParent,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Single-Parent HHs",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage Single-Parent Households")), texFileName)
 
 comBl10 <- lm(comBl10 ~ quantScore +
@@ -905,6 +934,11 @@ writeLines(capture.output(stargazer(com60,
                                     style = "qje",
                                     omit = 2:64,
                                     title = "Percentage Commutes 60 or More Minutes")), texFileName)
+texFileName <- "D:/AP LARSON/HOLC/allCom.tex"
+writeLines(capture.output(stargazer(comBl10, com10, com20, com30, com40, com60,
+                                    style = "qje",
+                                    omit = 2:64,
+                                    title = "Percentage Commutes by Duration (Minutes)")), texFileName)
 
 dat$allBl149 <- dat$pct100 + dat$pct149
 poverty <- lm(allBl149 ~ quantScore +
@@ -977,7 +1011,9 @@ texFileName <- "D:/AP LARSON/HOLC/poverty.tex"
 writeLines(capture.output(stargazer(poverty,
                                     style = "qje",
                                     omit = 2:64,
-                                    title = "Percentage Residents Below 149\% FPL")), texFileName)
+                                    dep.var.labels = "Pct. Below 149% FPL",
+                                    covariate.labels = "HOLC Rating",
+                                    title = "Percentage Residents Below 149% FPL")), texFileName)
 
 deepPoverty <- lm(pct100 ~ quantScore +
                     `Akron, OH` +
@@ -1049,7 +1085,9 @@ texFileName <- "D:/AP LARSON/HOLC/deepPoverty.tex"
 writeLines(capture.output(stargazer(deepPoverty,
                                     style = "qje",
                                     omit = 2:64,
-                                    title = "Percentage Residents Below 100\% FPL")), texFileName)
+                                    dep.var.labels = "Pct. Below 100% FPL",
+                                    covariate.labels = "HOLC Rating",
+                                    title = "Percentage Residents Below 100% FPL")), texFileName)
 
 nWht <- lm(pctWht ~ quantScore +
              `Akron, OH` +
@@ -1121,6 +1159,8 @@ texFileName <- "D:/AP LARSON/HOLC/nWht.tex"
 writeLines(capture.output(stargazer(nWht,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. White Residents",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage White Residents")), texFileName)
 
 nBlk <- lm(pctBlk ~ quantScore +
@@ -1193,6 +1233,8 @@ texFileName <- "D:/AP LARSON/HOLC/nBlk.tex"
 writeLines(capture.output(stargazer(nBlk,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Black Residents",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage Black Residents")), texFileName)
 
 nHisp <- lm(pctHisp ~ quantScore +
@@ -1265,6 +1307,8 @@ texFileName <- "D:/AP LARSON/HOLC/nHisp.tex"
 writeLines(capture.output(stargazer(nHisp,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "Pct. Hispanic/Latino Residents",
+                                    covariate.labels = "HOLC Rating",
                                     title = "Percentage Hispanic/Latino Residents")), texFileName)
 
 rentCost <- lm(hunMedRent ~ quantScore +
@@ -1337,10 +1381,11 @@ texFileName <- "D:/AP LARSON/HOLC/rentCost.tex"
 writeLines(capture.output(stargazer(rentCost,
                                     style = "qje",
                                     omit = 2:64,
-                                    title = "Median Rent, \$100s")), texFileName)
+                                    dep.var.labels = "Median Rent, $100s",
+                                    covariate.labels = "HOLC Rating",
+                                    title = "Median Rent, $100s")), texFileName)
 
 grapi <- lm(grapi ~ quantScore +
-              hunMedRent +
               `Akron, OH` +
               `Albany-Schenectady-Troy, NY` +
               `Atlanta-Sandy Springs-Roswell, GA` +
@@ -1402,16 +1447,34 @@ grapi <- lm(grapi ~ quantScore +
               `Utica-Rome, NY` +
               `Virginia Beach-Norfolk-Newport News, VA-NC` +
               `Warren-Troy-Farmington Hills, MI` +
-              `Winston-Salem, NC`,
+              `Winston-Salem, NC` +
             # `Youngstown-Warren-Boardman, OH-PA` +
+              hunMedRent,
             data = dat)
 # print(summary(grapi), digits = 3)
 texFileName <- "D:/AP LARSON/HOLC/grapi.tex"
 writeLines(capture.output(stargazer(grapi,
                                     style = "qje",
                                     omit = 2:64,
+                                    dep.var.labels = "GRAPI",
+                                    covariate.labels = c("HOLC Rating", "Median Rent, $100s"),
                                     title = "Gross Rent as a Percentage of Annual Income")), texFileName)
 
 myCols <- c("grapi", "hunMedRent")
 testCase <- dat[myCols]
 cor(testCase, method = "pearson", use = "complete.obs")
+
+# For fun, by region. Doesn't control for within-city corr, though
+housingValueR <- lm(thouHousVal ~ quantScore +
+                     regWest +
+                     regNortheast +
+                     regSouth +
+                     bed0 +
+                     bed1 +
+                     bed2 +
+                     bed3 +
+                     bed4 +
+                     medAge +
+                     completePlumb +
+                     completeKitch, data = dat)
+# print(summary(housingValue), digits = 3)
