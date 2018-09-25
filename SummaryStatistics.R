@@ -124,3 +124,21 @@ for (i in 1:16){
   print(weighted.mean(testDf$zeroCar, testDf$popData, na.rm=TRUE))
   print(weighted.mean(testDf$grapi, testDf$popData, na.rm=TRUE))
 }
+
+# Indices of dissimilarity
+dat$wht <- dat$popData * dat$pctWht
+dat$blk <- dat$popData * dat$pctBlk
+CBSAsplit <- split(dat, dat$cbsaname)
+resultDf <- NULL
+for (i in 1:63){
+  myDf <- CBSAsplit[[i]]
+  totWht <- sum(myDf$wht)
+  totBlk <- sum(myDf$blk)
+  myDf$newWht <- myDf$wht / totWht
+  myDf$newBlk <- myDf$blk / totBlk
+  myDf$absDiff <- abs(myDf$newWht - myDf$newBlk)
+  totDiff <- round((sum(myDf$absDiff) / 2), digits = 3)
+  myCity <- as.character(unique(myDf$cbsaname))
+  resultDf <- rbind(resultDf, c(myCity, totDiff))
+}
+write.csv(resultDf, "DissimIdx.csv", row.names = FALSE)
