@@ -40,8 +40,8 @@ sp.na.omit <- function(x, col.name = NULL, margin = 1) {
   }
 }
 setwd("D:/AP LARSON/HOLC")
-# Read in test sample of appraisal data (definitely a test, n = 2000)
-appr <- readOGR(".", "appraisalDataSamp2000")
+# Read in sample of appraisal data. n = 145,179, 25% sample of original
+appr <- readOGR(".", "appraisalDataSamp")
 
 # 1) CAT CD / CATEGORY CODE == 1 (Residential)
 apprSub <- subset(appr, category_c == "1")
@@ -77,5 +77,5 @@ apprSub$SqFt <- as.numeric(as.character(apprSub$SqFt))
 apprSub$SqFt[apprSub$SqFt == 0] <- NA
 apprSub <- sp.na.omit(apprSub)
 apprSub$CostSqFt <- apprSub$ApprBldg / apprSub$SqFt
-
-writeOGR(apprSub, ".", "finalAppraisalSampTEST", driver = "ESRI Shapefile")
+# Final n = 105,792
+writeOGR(apprSub, ".", "finalAppraisalSamp", driver = "ESRI Shapefile")
