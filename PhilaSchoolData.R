@@ -33,7 +33,7 @@ pts <- readOGR(".", "Schools")
 polys <- readOGR(".", "Catchment_HS_2016")
 state <- read.csv("highSchoolInfo.csv")
 state <- state[c(2,12)]
-colnames(state)[2] <- "Score"
+colnames(state)[2] <- "ScoreC"
 
 pts <- merge(pts, state, by = "MatchID")
 pts <- pts[c(1,7,17)]
@@ -47,8 +47,8 @@ polys <- spTransform(polys, proj4string(ptsShort))
 
 # Voronoi for point data
 vor <- voronoi.polygons(ptsShort, polys)
-hsRating <- as.data.frame(cbind(ptsShort@coords, ptsShort$Score))
-colnames(hsRating) <- c("x", "y", "Score")
+hsRating <- as.data.frame(cbind(ptsShort@coords, ptsShort$ScoreC))
+colnames(hsRating) <- c("x", "y", "ScoreV")
 vor2 <- merge(vor, hsRating, by = c("x", "y"))
 
 # Export
