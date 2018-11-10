@@ -1,27 +1,9 @@
 rm(list=ls())
-library(rgdal); library(sp); library(raster); library(stargazer); library(car)
-sp.na.omit <- function(x, col.name = NULL, margin = 1) {
-  if (!inherits(x, "SpatialPointsDataFrame") & 
-      !inherits(x, "SpatialPolygonsDataFrame") & 
-      !inherits(x, "SpatialLinesDataFrame") )
-    stop("MUST BE sp SpatialPointsDataFrame OR SpatialPolygonsDataFrame class object")
-  if(!is.null(col.name)) {
-    if(is.na(match(col.name, names(x)))) stop(col.name, "does not exist in data") 
-    return( x[-which(is.na(x@data[,col.name])),] )
-  } else {    
-    na.index <- unique(as.data.frame(which(is.na(x@data), arr.ind = TRUE))[, margin])
-    if (margin == 1) {
-      cat("Deleting rows: ", na.index, "\n")
-      return(x[-na.index, ])
-    }
-    if (margin == 2) {
-      cat("Deleting columns: ", na.index, "\n")
-      return(x[, -na.index])
-    }
-  }
-}
+library(rgdal); library(sp); library(raster)
+library(stargazer); library(car); library(spatialEco)
+library(tigris)
 setwd("D:/AP LARSON/HOLC")
-
+philaTrct <- tracts(42, 101)
 holc <- readOGR(".", "holc_polygons", stringsAsFactors = FALSE) # HOLC neighborhood grades
 crime <- raster("finalViolentCrime.tif") # Kernel density of shootings
 schVor <- readOGR(".", "finalSchoolPts") # School assignment by nearest school (Voronoi polygons)
@@ -61,8 +43,8 @@ appr$JobsRes <- appr$Jobs / 1000
 # Linear regression
 apprDf <- as.data.frame(appr)
 apprDf <- apprDf[c(6,8,9,11:16)]
-round(cor(testDf), 3)
-lm1 <- lm(CostSqFt ~ ScoreVor + CrimeRes + JobsRes + holcA + holcB + holcC, data = testDf)
+round(cor(apprDf), 3)
+lm1 <- lm(CostSqFt ~ ScoreVor + CrimeRes + JobsRes + holcA + holcB + holcC, data = apprDf)
 summary(lm1)
 vif(lm1)
 # Variables are in the direction we'd expect.
@@ -78,3 +60,16 @@ writeLines(capture.output(stargazer(lm1,
                                                          "HOLC Grade B",
                                                          "HOLC Grade C"),
                                     title = "Single-Family Housing Values")), texFileName)
+
+philaTrct <- spTransform(philaTrct, proj4string(appr))
+apprResid <- sp::over(appr, philaTrct)
+apprResid$resid <- lm1$residuals
+apprResid$appr <- appr$CostSqFt
+apprResidAgg <- aggregate(apprResid$resid, list(apprResid$GEOID), mean)
+apprValAgg <- aggregate(apprResid$appr, list(apprResid$GEOID), mean)
+colnames(apprResidAgg) <- c("GEOID", "meanResid")
+colnames(apprValAgg) <- c("GEOID", "meanVal")
+apprAgg <- merge(apprResidAgg, apprValAgg, by = "GEOID")
+philaTrct <- merge(philaTrct, apprAgg, by = "GEOID", all.x = TRUE)
+philaTrct <- spTransform(philaTrct, CRS("+init=epsg:26918"))
+writeOGR(philaTrct, ".", "PhilaResiduals", driver = "ESRI Shapefile")
